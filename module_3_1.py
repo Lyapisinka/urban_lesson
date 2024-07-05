@@ -1,3 +1,5 @@
+#задание 3.1
+
 calls = 0
 
 
@@ -10,6 +12,7 @@ def string_info(string):
     count_calls()
     str_inf = (len(string), string.upper(), string.lower())
     return str_inf
+
 
 def is_contains(is_str, is_list):
     count_calls()

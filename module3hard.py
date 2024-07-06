@@ -1,59 +1,3 @@
-glist = []
-
-
-def list_(args):
-    for i in args:
-        for j in i:
-            for k in j:
-                if isinstance(k, int):
-                    glist.append(k)
-                elif isinstance(k, str):
-                    glist.append(len(k))
-                elif isinstance(k, tuple):
-                    for l in k:
-                        if isinstance(l, int):
-                            glist.append(l)
-                        elif isinstance(l, str):
-                            glist.append(len(l))
-
-
-def str_(args):
-    glist.append(len(args))
-
-
-def dict_(**args):
-    for key, j in args.items():
-        key = len(key)
-        glist.append(key)
-        glist.append(j)
-
-
-def tuple_(*args):
-    for k in args:
-        if isinstance(k, int):
-            glist.append(k)
-        elif isinstance(k, dict):
-            dict_(**k)
-        elif isinstance(k, list):
-            list_(k)
-
-
-def calculate_structure_sum(*args):
-    for i in range(len(args)):
-        if isinstance(args[i], list):
-            glist.extend(args[i])
-            continue
-        elif isinstance(args[i], dict):
-            dict_(**args[i])
-            continue
-        elif isinstance(args[i], tuple):
-            tuple_(*args[i])
-            continue
-        elif isinstance(args[i], str):
-            str_(args[i])
-            continue
-    return sum(glist)
-
 data_structure = [
     [1, 2, 3],
     {'a': 4, 'b': 5},
@@ -63,5 +7,29 @@ data_structure = [
 ]
 
 
-result = calculate_structure_sum(*data_structure)
+def calculate_structure_sum(data, is_end=False):
+    result = []
+
+    if isinstance(data, list) or isinstance(data, tuple):
+        for item in data:
+            result.extend(calculate_structure_sum(item))
+    elif isinstance(data, set):
+        for item in data:
+            result.extend(calculate_structure_sum(item))
+    elif isinstance(data, dict):
+        for key, value in data.items():
+            result.append(len(key))
+            result.extend(calculate_structure_sum(value))
+    elif isinstance(data, str):
+        result.append(len(data))
+    else:
+        result.append(data)
+
+    if not is_end:
+        return result
+    else:
+        return sum(result)
+
+
+result = calculate_structure_sum(data_structure, True)
 print(result)

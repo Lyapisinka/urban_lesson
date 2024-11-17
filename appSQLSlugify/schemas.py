@@ -19,6 +19,10 @@ class CreateTask(BaseModel):
     title: str
     content: str
     priority: int
+    completed: bool
+
+    class Config:
+        orm_mode = True
 
 class UpdateTask(BaseModel):
     title: str
